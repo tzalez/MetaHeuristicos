@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package principal;
+package clases;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 /**
@@ -16,12 +18,14 @@ import java.util.StringTokenizer;
 public class ParserTSP {
 
     private static ParserTSP vecinos = new ParserTSP();
-    private int populationSize;
-    private int maxGenerations;
+    //private int populationSize;
+    // private int maxGenerations;
     private int maxRuns;
-    private boolean isTSPFileIn;
+    //private boolean isTSPFileIn;
     private int matrizDistancias[][];
     private int numVecinos;
+    private HashMap<Integer, Ciudad> lCiudades = new HashMap();
+    private Ruta ruta = new Ruta();
 
     private ParserTSP() {
     }
@@ -71,5 +75,26 @@ public class ParserTSP {
         }
 
         return graph;
+    }
+
+    public void cargarCiudades() {
+        for (int i = 0; i < matrizDistancias.length; i++) {
+            Ciudad temp = new Ciudad(i);
+            for (int j = 0; j < i; j++) {
+                temp.agregarDestino(j, matrizDistancias[j][i]);
+            }
+            for (int z = i + 1; z < matrizDistancias.length; z++) {
+                temp.agregarDestino(z, matrizDistancias[i][z]);
+            }
+            lCiudades.put(i, temp);
+        }
+    }
+
+    public void generarRutaAleatoria() {
+        while (ruta.tamanoLista() <= matrizDistancias.length) {
+            int ran = (int) (Math.random() * 42);
+            ruta.agregarCiudad(lCiudades.get(ran));
+        }
+
     }
 }
