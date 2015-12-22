@@ -12,34 +12,39 @@ import clases.ParserTSP;
  * @author Alvaro
  */
 /*Evaluar 1.000.000 de soluciones
-  Repetir el proceso unas 10 veces para ajustar los valores
-*/
-public class main{
-    
-    public static void main(String[] args)throws Exception{
-        ParserTSP.getVecinos().cargarDatos("./src/ficheros/dantzig42.tsp", 42);
-        int distancias[][]=ParserTSP.getVecinos().getMatrizDistancias();
+ Repetir el proceso unas 10 veces para ajustar los valores
+ */
+import clases.Ruta;
+
+public class main {
+
+    public static void main(String[] args) throws Exception {
+        ParserTSP.getParserTSP().cargarDatos("./src/ficheros/dantzig42.tsp", 42);
+        int distancias[][] = ParserTSP.getParserTSP().getMatrizDistancias();
         System.out.println(toString(distancias));
+        ParserTSP.getParserTSP().cargarCiudades();
+        ParserTSP.getParserTSP().generarRutaAleatoria();
+        System.out.println("Greedy:");
+        Ruta result=ParserTSP.getParserTSP().greedy();
+        System.out.println("La distancia menor es " + result.calcularSumaDistancias());
     }
-    
-public static String toString(int[][] M) {
-    String separator = "\t";
-    StringBuffer result = new StringBuffer();
-    // iterate over the first dimension
-    for (int i = 0; i < M.length; i++){
-        System.out.print("fila "+i+" ");
-        System.out.println();
-        // iterate over the second dimension
-        for(int j = 0; j < M[i].length; j++){
-            result.append(M[i][j]);
-            result.append(separator);
+
+    public static String toString(int[][] M) {
+        String separator = "\t";
+        StringBuffer result = new StringBuffer();
+        // iterate over the first dimension
+        for (int i = 0; i < M.length; i++) {
+            // iterate over the second dimension
+            for (int j = 0; j < M[i].length; j++) {
+                result.append(M[i][j]);
+                result.append(separator);
+            }
+            // remove the last separator
+            result.setLength(result.length() - separator.length());
+            // add a line break.
+            result.append("\n");
         }
-        // remove the last separator
-        result.setLength(result.length() - separator.length());
-        // add a line break.
-        result.append("\n");
+        return result.toString();
     }
-    return result.toString();
-}
 
 }

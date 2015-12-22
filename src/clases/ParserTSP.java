@@ -19,18 +19,18 @@ public class ParserTSP {
 
     private static ParserTSP vecinos = new ParserTSP();
     //private int populationSize;
-    // private int maxGenerations;
-    private int maxRuns;
+    private int maxGenerations;
+    private int maxRuns = 100000;
     //private boolean isTSPFileIn;
     private int matrizDistancias[][];
     private int numVecinos;
     private HashMap<Integer, Ciudad> lCiudades = new HashMap();
-    private Ruta ruta = new Ruta();
+    private Ruta rutaO = new Ruta();
 
     private ParserTSP() {
     }
 
-    public static ParserTSP getVecinos() {
+    public static ParserTSP getParserTSP() {
         return vecinos;
     }
 
@@ -80,21 +80,83 @@ public class ParserTSP {
     public void cargarCiudades() {
         for (int i = 0; i < matrizDistancias.length; i++) {
             Ciudad temp = new Ciudad(i);
-            for (int j = 0; j < i; j++) {
-                temp.agregarDestino(j, matrizDistancias[j][i]);
-            }
-            for (int z = i + 1; z < matrizDistancias.length; z++) {
-                temp.agregarDestino(z, matrizDistancias[i][z]);
+            for (int j = 0; j < matrizDistancias[i].length; j++) {
+                if (i < j) {
+                    temp.agregarDestino(j, matrizDistancias[j][i]);
+                    //System.out.println(matrizDistancias[j][i]);
+                } else if (j < i) {
+                    temp.agregarDestino(j, matrizDistancias[i][j]);
+                    //System.out.println(matrizDistancias[i][j]);
+                }
             }
             lCiudades.put(i, temp);
+
         }
+
     }
 
     public void generarRutaAleatoria() {
-        while (ruta.tamanoLista() <= matrizDistancias.length) {
+        while (rutaO.tamanoLista() < matrizDistancias.length) {
             int ran = (int) (Math.random() * 42);
-            ruta.agregarCiudad(lCiudades.get(ran));
+            rutaO.agregarCiudad(lCiudades.get(ran));
         }
+    }
+    public Ruta generarRutaAleatoriaP() {
+        Ruta r=new Ruta();
+        while (r.tamanoLista() < matrizDistancias.length) {
+            int ran = (int) (Math.random() * 42);
+            r.agregarCiudad(lCiudades.get(ran));
+        }
+        return r;
+    }
 
+    public boolean contieneRuta(LinkedList<Ruta>lRutas, Ruta ru){
+    boolean contains=false;
+        for (int i = 0; i < lRutas.size(); i++) {
+            if(lRutas.get(i).comparar(ru)){
+                contains=true;
+                break;
+            }
+        }
+    return contains;
+    }
+    
+    public Ruta greedy() {
+        int fCurrent, fAux;
+        int iBest = 0;
+        int jBest = 0;
+        LinkedList<Ruta> rutasEvaluadas=new LinkedList();
+        fCurrent = rutaO.calcularSumaDistancias();
+        System.out.println(fCurrent);
+        rutasEvaluadas.addLast(rutaO);
+        maxRuns--;
+        Ruta rutaAux;
+        while (maxRuns > 0) {  
+            for (int i = 0; i < matrizDistancias.length && maxRuns >0; i++) {
+                for (int j = 0; j < matrizDistancias.length&& maxRuns >0; j++) {
+                    System.out.println(maxRuns);
+                    if (i != j) {
+                        rutaAux = rutaO.swapLocal(i, j);
+                        if(!contieneRuta(rutasEvaluadas,rutaAux)){
+                        rutasEvaluadas.addLast(rutaAux);
+                        fAux = rutaAux.calcularSumaDistancias();
+                        maxRuns--;
+                        if (fAux < fCurrent) {
+                            iBest = i;
+                            jBest = j;
+                            fCurrent = fAux;
+                           // System.out.println(fCurrent);
+                        }
+                        }
+                    }
+                }
+            }
+            
+            if (rutaO.comparar(rutaO.swapLocal(iBest, jBest))) {
+                break;
+            }
+            rutaO= rutaO.swapLocal(iBest, jBest);
+        }
+return rutaO;
     }
 }
