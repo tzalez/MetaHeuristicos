@@ -17,6 +17,9 @@ public class Poblacion {
     private LinkedList<Ruta> poblacion = new LinkedList();
     private final int poblacionSize = 100;
     private final int padresCandidatos = 50;
+    private final double ratioMutacion = 0.10;
+    private final int candidatosSize = 50;
+
     //one point entre 0...41
     //mutar ramdom < 0.10 -> > 0.10 no mutar (mutar las dos rutas)(se muta con swap aleatorio)
 //IKER QUEDA POR HACER EL MÉTODO DE CRUCE Y PROBAR LO QUE HEMOS HECHO
@@ -83,12 +86,47 @@ public class Poblacion {
             }
         }
     }
-    
-    public void mutar(Ruta hijo1,Ruta hijo2){
-    double mutar = (Math.random() * 1);
-    if(mutar<0.1){
-    hijo1.swapPobla();
-    hijo2.swapPobla();
+
+    public void mutar(Ruta hijo1, Ruta hijo2) {
+        double mutar = (Math.random() * 1);
+        if (mutar < ratioMutacion) {
+            hijo1.swapPobla();
+            hijo2.swapPobla();
+        }
     }
+
+    public Ruta[] cruzarRutas(Ruta r1, Ruta r2) {
+        //aplicar el metodo 1-point
+        Ruta copyR1=new Ruta();
+        copyR1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
+        Ruta newRuta1 = new Ruta();
+        newRuta1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
+        Ruta newRuta2 = new Ruta();
+        newRuta2.setRuta(new LinkedList<Ciudad>(r2.getRuta()));
+        int point = (int) Math.random() * r1.numeroCiudades();
+        newRuta1.eliminarDesde(point);
+        for (int j = 0; j < newRuta2.numeroCiudades(); j++) {
+            if (!newRuta1.getRuta().contains(newRuta2.getRuta().get(j))) {
+                newRuta1.agregarCiudad(newRuta2.getRuta().get(j));
+            }
+        }
+        newRuta2.eliminarDesde(point);
+        for (int i = 0; i < copyR1.numeroCiudades(); i++) {
+            if (!newRuta2.getRuta().contains(copyR1.getRuta().get(i))) {
+                newRuta2.agregarCiudad(copyR1.getRuta().get(i));
+            }
+        }
+        Ruta rutas[]= {newRuta1,newRuta2};
+        return rutas;
     }
+
+    public LinkedList<Ruta> obtenerCandidatosCruze() {
+        LinkedList<Ruta> candidatos = new LinkedList();
+        for (int i = 0; i < candidatosSize; i++) {
+            int indiceRuta = (int) (Math.random() * poblacion.size());
+            candidatos.add(i, poblacion.get(indiceRuta));
+        }
+        return candidatos;
+    }
+
 }

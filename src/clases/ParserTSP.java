@@ -96,48 +96,49 @@ public class ParserTSP {
     }
 
     public void generarRutaAleatoria() {
-        while (rutaO.tamanoLista() < matrizDistancias.length) {
+        while (rutaO.numeroCiudades() < matrizDistancias.length) {
             int ran = (int) (Math.random() * 42);
             rutaO.agregarCiudad(lCiudades.get(ran));
         }
     }
+
     public Ruta generarRutaAleatoriaP() {
-        Ruta r=new Ruta();
-        while (r.tamanoLista() < matrizDistancias.length) {
+        Ruta r = new Ruta();
+        while (r.numeroCiudades() < matrizDistancias.length) {
             int ran = (int) (Math.random() * 42);
             r.agregarCiudad(lCiudades.get(ran));
         }
         return r;
     }
 
-    public boolean contieneRuta(LinkedList<Ruta>lRutas, Ruta ru){
-    boolean contains=false;
+    public boolean contieneRuta(LinkedList<Ruta> lRutas, Ruta ru) {
+        boolean contains = false;
         for (int i = 0; i < lRutas.size(); i++) {
-            if(lRutas.get(i).comparar(ru)){
-                contains=true;
+            if (lRutas.get(i).comparar(ru)) {
+                contains = true;
                 break;
             }
         }
-    return contains;
+        return contains;
     }
-    
+
     public Ruta greedy() {
         int fCurrent, fAux;
         int iBest = 0;
         int jBest = 0;
-        LinkedList<Ruta> rutasEvaluadas=new LinkedList();
+        LinkedList<Ruta> rutasEvaluadas = new LinkedList();
         fCurrent = rutaO.calcularSumaDistancias();
         System.out.println(fCurrent);
         rutasEvaluadas.addLast(rutaO);
         maxRuns--;
         Ruta rutaAux;
-        while (maxRuns > 0) {  
-            for (int i = 0; i < matrizDistancias.length && maxRuns >0; i++) {
-                for (int j = 0; j < matrizDistancias.length&& maxRuns >0; j++) {
+        while (maxRuns > 0) {
+            for (int i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
+                for (int j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
                     System.out.println(maxRuns);
                     if (i != j) {
                         rutaAux = rutaO.swapLocal(i, j);
-                        if(!contieneRuta(rutasEvaluadas,rutaAux)){
+                        //if(!contieneRuta(rutasEvaluadas,rutaAux)){
                         rutasEvaluadas.addLast(rutaAux);
                         fAux = rutaAux.calcularSumaDistancias();
                         maxRuns--;
@@ -145,18 +146,18 @@ public class ParserTSP {
                             iBest = i;
                             jBest = j;
                             fCurrent = fAux;
-                           // System.out.println(fCurrent);
                         }
-                        }
+                        //}
                     }
                 }
             }
-            
+
             if (rutaO.comparar(rutaO.swapLocal(iBest, jBest))) {
                 break;
+            } else {
+                rutaO = rutaO.swapLocal(iBest, jBest);
             }
-            rutaO= rutaO.swapLocal(iBest, jBest);
         }
-return rutaO;
+        return rutaO;
     }
 }

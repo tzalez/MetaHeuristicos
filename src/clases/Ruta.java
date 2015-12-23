@@ -13,7 +13,7 @@ public class Ruta {
 
     public Ruta() {
         ruta = new LinkedList();
-        this.sumaDistancias=0;
+        this.sumaDistancias = 0;
     }
 
     public void agregarCiudad(Ciudad Ciudad) {
@@ -55,8 +55,8 @@ public class Ruta {
         System.out.println();
     }
 
-    public Ruta swapLocal(int id1, int id2){
-        Ruta result=new Ruta();
+    public Ruta swapLocal(int id1, int id2) {
+        Ruta result = new Ruta();
         result.setRuta(new LinkedList<Ciudad>(this.getRuta()));
         Ciudad aux1 = result.getRuta().get(id1);
         Ciudad aux2 = result.getRuta().get(id2);
@@ -67,7 +67,6 @@ public class Ruta {
 
     public int calcularSumaDistancias() {
         sumaDistancias = 0;
-
         for (int i = 0; i < ruta.size(); i++) {
             if (i == ruta.size() - 1) {
                 sumaDistancias += ruta.get(i).devolverDistDestino(ruta.get(0).getIdCuidad());
@@ -79,7 +78,7 @@ public class Ruta {
         return sumaDistancias;
     }
 
-    public int tamanoLista() {
+    public int numeroCiudades() {
         return ruta.size();
     }
 
@@ -90,10 +89,15 @@ public class Ruta {
                 iguales = false;
                 break;
             }
-
         }
 
         return iguales;
+    }
+
+    public void eliminarDesde(int n) {
+        for (int i = n; i < this.ruta.size(); i++) {
+            this.ruta.remove(i);
+        }
     }
 
 }
