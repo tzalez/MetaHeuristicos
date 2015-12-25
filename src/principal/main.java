@@ -6,6 +6,7 @@
 package principal;
 
 import clases.ParserTSP;
+import clases.Poblacion;
 
 /**
  *
@@ -19,16 +20,26 @@ import clases.Ruta;
 public class main {
 
     public static void main(String[] args) throws Exception {
+        //cargar ciudades
         ParserTSP.getParserTSP().cargarDatos("./src/ficheros/dantzig42.tsp", 42);
         int distancias[][] = ParserTSP.getParserTSP().getMatrizDistancias();
-        System.out.println(toString(distancias));
+        //System.out.println(toString(distancias));
         ParserTSP.getParserTSP().cargarCiudades();
+        /*
+        //Busqueda local
         ParserTSP.getParserTSP().generarRutaAleatoria();
         System.out.println("Greedy:");
         Ruta result=ParserTSP.getParserTSP().greedy();
         System.out.println("La distancia menor es " + result.calcularSumaDistancias());
+        */
+        //Busqueda en una poblacion
+        Poblacion.getPoblacion().buscarRutaEnPoblacion();
+        System.out.println(Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
     }
 
+    
+    
+    
     public static String toString(int[][] M) {
         String separator = "\t";
         StringBuffer result = new StringBuffer();

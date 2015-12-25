@@ -19,10 +19,11 @@ public class Poblacion {
     private final int padresCandidatos = 50;
     private final double ratioMutacion = 0.10;
     private final int candidatosSize = 50;
+    private int evaluations;
+    private final int numeroIteraciones = 1000000;
 
     //one point entre 0...41
     //mutar ramdom < 0.10 -> > 0.10 no mutar (mutar las dos rutas)(se muta con swap aleatorio)
-//IKER QUEDA POR HACER EL MÉTODO DE CRUCE Y PROBAR LO QUE HEMOS HECHO
     private Poblacion() {
 
     }
@@ -32,46 +33,59 @@ public class Poblacion {
 
     }
 
+    public Ruta obtenerPrimeraRuta() {
+        return poblacion.get(0);
+    }
+
     public void eliminarDescartados() {
-        for (int i = poblacionSize; i < poblacion.size(); i++) {
-            poblacion.remove(poblacionSize);
+        for (int i = poblacionSize-1; i < poblacion.size()-1; i++) {
+            poblacion.removeLast();
         }
     }
 
     public void ordenar() {
-        poblacion = new LinkedList(quicksort((Ruta[]) poblacion.toArray(), 0, poblacion.size() - 1));
+        poblacion = new LinkedList(quicksort (poblacion, 0, poblacion.size() - 1));
+    }
+    public void imprimirRutas(){
+        int i=1;
+        for(Ruta r: poblacion){
+            System.out.println("Ruta "+i);
+            System.out.println(r.getSumaDistancias());
+            System.out.println(r.imprimirCiudades());
+            i++;
+        }
     }
 
-    private LinkedList<Ruta> quicksort(Ruta A[], int izq, int der) {
+    private LinkedList<Ruta> quicksort(LinkedList<Ruta> lR, int izq, int der) {
         LinkedList<Ruta> result = new LinkedList();
-        Ruta pivote = A[izq]; // tomamos primer elemento como pivote
+        Ruta pivote = lR.get(izq); // tomamos primer elemento como pivote
         int i = izq; // i realiza la bÃºsqueda de izquierda a derecha
         int j = der; // j realiza la bÃºsqueda de derecha a izquierda
         Ruta aux;
 
         while (i < j) { // mientras no se crucen las bÃºsquedas
-            while (A[i].getSumaDistancias() <= pivote.getSumaDistancias() && i < j) {
+            while (lR.get(i).getSumaDistancias() <= pivote.getSumaDistancias() && i < j) {
                 i++; // busca elemento mayor que pivote
             }
-            while (A[j].getSumaDistancias() > pivote.getSumaDistancias()) {
+            while (lR.get(j).getSumaDistancias() > pivote.getSumaDistancias()) {
                 j--; // busca elemento menor que pivote
             }
             if (i < j) { // si no se han cruzado
-                aux = A[i]; // los intercambia
-                A[i] = A[j];
-                A[j] = aux;
+                aux = lR.get(i); // los intercambia
+                lR.set(i, lR.get(j));
+                lR.set(j, aux);
             }
         }
-        A[izq] = A[j]; // se coloca el pivote en su lugar de forma que tendremos
-        A[j] = pivote; // los menores a su izquierda y los mayores a su derecha
+        lR.set(izq, lR.get(j));// se coloca el pivote en su lugar de forma que tendremos
+        lR.set(j, pivote); // los menores a su izquierda y los mayores a su derecha
         if (izq < j - 1) {
-            quicksort(A, izq, j - 1); // ordenamos subarray izquierdo
+            quicksort(lR, izq, j - 1); // ordenamos subarray izquierdo
         }
         if (j + 1 < der) {
-            quicksort(A, j + 1, der); // ordenamos subarray derecho
+            quicksort(lR, j + 1, der); // ordenamos subarray derecho
         }
-        for (int k = 0; k < A.length; k++) {
-            result.addLast(A[k]);
+        for (int k = 0; k < lR.size(); k++) {
+            result.add(lR.get(k));
         }
         return result;
     }
@@ -81,6 +95,8 @@ public class Poblacion {
             Ruta r = ParserTSP.getParserTSP().generarRutaAleatoriaP();
             if (!poblacion.contains(r)) {
                 poblacion.addLast(r);
+                r.calcularSumaDistancias();
+                evaluations++;
             } else {
                 i--;
             }
@@ -95,29 +111,47 @@ public class Poblacion {
         }
     }
 
-    public Ruta[] cruzarRutas(Ruta r1, Ruta r2) {
+    public LinkedList<Ruta> cruzarRutas(LinkedList<Ruta> lR) {
         //aplicar el metodo 1-point
-        Ruta copyR1=new Ruta();
-        copyR1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
-        Ruta newRuta1 = new Ruta();
-        newRuta1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
-        Ruta newRuta2 = new Ruta();
-        newRuta2.setRuta(new LinkedList<Ciudad>(r2.getRuta()));
-        int point = (int) Math.random() * r1.numeroCiudades();
-        newRuta1.eliminarDesde(point);
-        for (int j = 0; j < newRuta2.numeroCiudades(); j++) {
-            if (!newRuta1.getRuta().contains(newRuta2.getRuta().get(j))) {
-                newRuta1.agregarCiudad(newRuta2.getRuta().get(j));
+        LinkedList<Ruta> nuevasRutas = new LinkedList();
+        int i = 0;
+        Ruta r1;
+        Ruta r2;
+        while (i < lR.size()) {
+            if (evaluations > numeroIteraciones) {
+                break;
             }
-        }
-        newRuta2.eliminarDesde(point);
-        for (int i = 0; i < copyR1.numeroCiudades(); i++) {
-            if (!newRuta2.getRuta().contains(copyR1.getRuta().get(i))) {
-                newRuta2.agregarCiudad(copyR1.getRuta().get(i));
+            //System.out.println(evaluations);
+            r1 = lR.get(i);
+            r2 = lR.get(i + 1);
+            Ruta copyR1 = new Ruta();
+            copyR1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
+            Ruta newRuta1 = new Ruta();
+            newRuta1.setRuta(new LinkedList<Ciudad>(r1.getRuta()));
+            Ruta newRuta2 = new Ruta();
+            newRuta2.setRuta(new LinkedList<Ciudad>(r2.getRuta()));
+            int point = (int) Math.random() * r1.numeroCiudades();
+            newRuta1.eliminarDesde(point);
+            for (int j = 0; j < newRuta2.numeroCiudades(); j++) {
+                if (!newRuta1.getRuta().contains(newRuta2.getRuta().get(j))) {
+                    newRuta1.agregarCiudad(newRuta2.getRuta().get(j));
+                }
             }
+            newRuta2.eliminarDesde(point);
+            for (int k = 0; k < copyR1.numeroCiudades(); k++) {
+                if (!newRuta2.getRuta().contains(copyR1.getRuta().get(k))) {
+                    newRuta2.agregarCiudad(copyR1.getRuta().get(k));
+                }
+            }
+            mutar(newRuta1, newRuta2);
+            newRuta1.calcularSumaDistancias();
+            newRuta2.calcularSumaDistancias();
+            evaluations = evaluations + 2;
+            nuevasRutas.addLast(newRuta1);
+            nuevasRutas.addLast(newRuta2);
+            i = i + 2;
         }
-        Ruta rutas[]= {newRuta1,newRuta2};
-        return rutas;
+        return nuevasRutas;
     }
 
     public LinkedList<Ruta> obtenerCandidatosCruze() {
@@ -127,6 +161,21 @@ public class Poblacion {
             candidatos.add(i, poblacion.get(indiceRuta));
         }
         return candidatos;
+    }
+
+    public void buscarRutaEnPoblacion() {
+        generarPoblacionInicial();
+        ordenar();
+        while (evaluations < numeroIteraciones) {
+            System.out.println(poblacion.size());
+            imprimirRutas();
+            poblacion.addAll(cruzarRutas(Poblacion.getPoblacion().obtenerCandidatosCruze()));
+            imprimirRutas();
+            System.out.println(poblacion.size());
+            ordenar();
+            eliminarDescartados();
+            System.out.println(poblacion.size());
+        }
     }
 
 }

@@ -8,7 +8,7 @@ public class Ruta {
     private int sumaDistancias;
 
     public int getSumaDistancias() {
-        return sumaDistancias;
+        return this.sumaDistancias;
     }
 
     public Ruta() {
@@ -35,10 +35,10 @@ public class Ruta {
     }
 
     public void swapPobla() {
-        for (int i = 0; i < ruta.size(); i++) {
-            System.out.print(ruta.get(i).getIdCuidad() + ",");
-        }
-        System.out.println();
+        /*for (int i = 0; i < ruta.size(); i++) {
+         System.out.print(ruta.get(i).getIdCuidad() + ",");
+         }
+         System.out.println();*/
         int r1 = (int) (Math.random() * 42);
         int r2;
         do {
@@ -48,11 +48,13 @@ public class Ruta {
         Ciudad aux2 = ruta.get(r2);
         ruta.set(r1, aux2);
         ruta.set(r2, aux1);
-        System.out.println("SWAP");
-        for (int i = 0; i < ruta.size(); i++) {
-            System.out.print(ruta.get(i).getIdCuidad() + ",");
-        }
-        System.out.println();
+        /*
+         System.out.println("SWAP");
+         for (int i = 0; i < ruta.size(); i++) {
+         System.out.print(ruta.get(i).getIdCuidad() + ",");
+         }
+         System.out.println();
+         */
     }
 
     public Ruta swapLocal(int id1, int id2) {
@@ -98,6 +100,13 @@ public class Ruta {
         for (int i = n; i < this.ruta.size(); i++) {
             this.ruta.remove(i);
         }
+    }
+    public String imprimirCiudades(){
+        String ciudades="";
+        for(Ciudad c : ruta){
+            ciudades= ciudades + c.getIdCuidad()+ " - ";
+        }
+        return ciudades;
     }
 
 }
