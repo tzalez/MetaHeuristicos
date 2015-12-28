@@ -93,6 +93,7 @@ public class Poblacion {
     }
 
     public void generarPoblacionInicial() {
+        poblacion= new LinkedList();
         for (int i = 0; i < poblacionSize; i++) {
             Ruta r = ParserTSP.getParserTSP().generarRutaAleatoriaP();
             if (!poblacion.contains(r)) {

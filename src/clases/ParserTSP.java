@@ -92,6 +92,7 @@ public class ParserTSP {
     }
 
     public void generarRutaAleatoria() {
+        rutaO = new Ruta();
         while (rutaO.numeroCiudades() < matrizDistancias.length) {
             int ran = (int) (Math.random() * 42);
             rutaO.agregarCiudad(lCiudades.get(ran));
