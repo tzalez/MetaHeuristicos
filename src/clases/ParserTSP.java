@@ -124,14 +124,14 @@ public class ParserTSP {
         int jBest = 0;
         LinkedList<Ruta> rutasEvaluadas = new LinkedList();
         fCurrent = rutaO.calcularSumaDistancias();
-        System.out.println(fCurrent);
+        //System.out.println(fCurrent);
         rutasEvaluadas.addLast(rutaO);
         maxRuns--;
         Ruta rutaAux;
         while (maxRuns > 0) {
             for (int i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
                 for (int j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
-                    System.out.println(maxRuns);
+                    //System.out.println(maxRuns);
                     if (i != j) {
                         rutaAux = rutaO.swapLocal(i, j);
                         //if(!contieneRuta(rutasEvaluadas,rutaAux)){

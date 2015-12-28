@@ -1,4 +1,3 @@
-
 package principal;
 
 import clases.ParserTSP;
@@ -19,23 +18,25 @@ public class main {
         //cargar ciudades
         ParserTSP.getParserTSP().cargarDatos("./src/ficheros/dantzig42.tsp", 42);
         int distancias[][] = ParserTSP.getParserTSP().getMatrizDistancias();
-        //System.out.println(toString(distancias));
-        ParserTSP.getParserTSP().cargarCiudades();
-        /*
-        //Busqueda local
-        ParserTSP.getParserTSP().generarRutaAleatoria();
-        System.out.println("Greedy:");
-        Ruta result=ParserTSP.getParserTSP().greedy();
-        System.out.println("La distancia menor es " + result.calcularSumaDistancias());
-        */
-        //Busqueda en una poblacion
-        Poblacion.getPoblacion().buscarRutaEnPoblacion();
-        System.out.println(Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Ejecucion " + (i+1));
+
+            ParserTSP.getParserTSP().cargarCiudades();
+
+            //Busqueda local
+            ParserTSP.getParserTSP().generarRutaAleatoria();
+            System.out.println("Greedy:");
+            Ruta result = ParserTSP.getParserTSP().greedy();
+            System.out.println("La distancia menor es " + result.calcularSumaDistancias());
+
+            //Busqueda en una poblacion
+            Poblacion.getPoblacion().buscarRutaEnPoblacion();
+            System.out.println("RUTA MAS CORTA");
+            System.out.println(Poblacion.getPoblacion().obtenerPrimeraRuta().imprimirCiudades());
+            System.out.println("Coste--> " + Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
+        }
     }
 
-    
-    
-    
     public static String toString(int[][] M) {
         String separator = "\t";
         StringBuffer result = new StringBuffer();

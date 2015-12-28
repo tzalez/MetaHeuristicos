@@ -39,19 +39,20 @@ public class Poblacion {
 
     public void eliminarDescartados() {
         //for (int i = poblacionSize-1; i < poblacion.size()-1; i++) {//Esto no se puede poner por que en cada iteracion el tamaño de poblacion.size() cambia
-        for(int i=poblacionSize; i < 150; i++){    
+        for (int i = poblacionSize; i < 150; i++) {
             poblacion.removeLast();
         }
     }
 
     public void ordenar() {
-        poblacion = new LinkedList(quicksort (poblacion, 0, poblacion.size() - 1));
+        poblacion = new LinkedList(quicksort(poblacion, 0, poblacion.size() - 1));
     }
-    public void imprimirRutas(){
-        int i=1;
-        for(Ruta r: poblacion){
-            System.out.println("Ruta "+i);
-            System.out.println("suma -->"+r.getSumaDistancias());
+
+    public void imprimirRutas() {
+        int i = 1;
+        for (Ruta r : poblacion) {
+            System.out.println("Ruta " + i);
+            System.out.println("suma -->" + r.getSumaDistancias());
             System.out.println(r.imprimirCiudades());
             i++;
         }
@@ -103,7 +104,6 @@ public class Poblacion {
             }
         }
     }
-    
 
     public void mutar(Ruta hijo1, Ruta hijo2) {
         double mutar = (Math.random() * 1);
@@ -169,9 +169,9 @@ public class Poblacion {
         generarPoblacionInicial();
         ordenar();
         while (evaluations < numeroIteraciones) {
-           imprimirRutas();
+            //imprimirRutas();
             poblacion.addAll(cruzarRutas(obtenerCandidatosCruze()));
-            imprimirRutas();
+            //imprimirRutas();
             ordenar();
             eliminarDescartados();
         }
