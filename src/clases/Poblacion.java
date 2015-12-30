@@ -16,8 +16,7 @@ public class Poblacion {
     private static Poblacion MAEPoblacion = new Poblacion();
     private LinkedList<Ruta> poblacion = new LinkedList();
     private final int poblacionSize = 100;
-    private final int padresCandidatos = 50;
-    private final double ratioMutacion = 0.10;
+    private final double ratioMutacion = 0.1;
     private final int candidatosSize = 50;
     private int evaluations;
     private int numeroIteraciones = 1000000;
@@ -32,6 +31,7 @@ public class Poblacion {
         return MAEPoblacion;
 
     }
+
     public void setNumeroIteraciones(int maxRuns) {
         this.numeroIteraciones = maxRuns;
     }
@@ -49,6 +49,7 @@ public class Poblacion {
 
     public void ordenar() {
         poblacion = new LinkedList(quicksort(poblacion, 0, poblacion.size() - 1));
+
     }
 
     public void imprimirRutas() {
@@ -96,14 +97,16 @@ public class Poblacion {
     }
 
     public void generarPoblacionInicial() {
-        poblacion= new LinkedList();
+        poblacion = new LinkedList();
         for (int i = 0; i < poblacionSize; i++) {
             Ruta r = ParserTSP.getParserTSP().generarRutaAleatoriaP();
             if (!poblacion.contains(r)) {
-                poblacion.addLast(r);
                 r.calcularSumaDistancias();
                 numeroIteraciones--;
+                poblacion.addLast(r);
+
             } else {
+                System.out.println("Jimy");
                 i--;
             }
         }
@@ -124,7 +127,7 @@ public class Poblacion {
         Ruta r1;
         Ruta r2;
         while (i < lR.size()) {
-            if ( numeroIteraciones<=0) {
+            if (numeroIteraciones <= 0) {
                 break;
             }
             //System.out.println(evaluations);
@@ -160,10 +163,64 @@ public class Poblacion {
         return nuevasRutas;
     }
 
+    public LinkedList<Ruta> cruzarRutas2(LinkedList<Ruta> lR) {
+        //aplicar el metodo 1-point
+        LinkedList<Ruta> nuevasRutas = new LinkedList();
+        int i = 0;
+        Ruta[] hijitos = new Ruta[2];
+        for (int j = 0; j <= candidatosSize / 2; j++) {
+            Ruta r1 = lR.get((int) (Math.random() * candidatosSize));
+            Ruta r2 = lR.get((int) (Math.random() * candidatosSize));
+            hijitos = cruceSimple(r1, r2);
+            nuevasRutas.addLast(hijitos[0]);
+            nuevasRutas.addLast(hijitos[1]);
+        }
+        return nuevasRutas;
+    }
+
+    public Ruta[] cruceSimple(Ruta rP1, Ruta rP2) {
+        Ruta[] result = new Ruta[2];
+        int point = (int) (Math.random() * rP1.numeroCiudades());
+        Ruta cp1 = new Ruta();
+        Ruta cp2 = new Ruta();
+        int i, j;
+        for (int k = 0; k < rP2.getRuta().size(); k++) {
+            System.out.println("AKI");
+            System.out.print(rP1.getRuta().get(k).getIdCuidad());
+            System.out.println();
+            System.out.print(rP2.getRuta().get(k).getIdCuidad());
+
+        }
+        for (i = 0; i <= point; i++) {
+            cp1.agregarCiudad(rP1.getRuta().get(i));
+            cp2.agregarCiudad(rP2.getRuta().get(i));
+
+        }
+        System.out.println("Tamaño aaa" + cp1.getRuta().size());
+        System.out.println("Tamaño2 aaa" + cp2.getRuta().size());
+
+        for (j = 0; j < rP2.getRuta().size(); j++) {
+            if (!cp1.contieneCiudad(rP2.getRuta().get(i).getIdCuidad())) {
+                cp1.agregarCiudad(rP2.getRuta().get(i));
+            }
+            if (!cp2.contieneCiudad(rP1.getRuta().get(i).getIdCuidad())) {
+                cp2.agregarCiudad(rP1.getRuta().get(i));
+            }
+
+        }
+        System.out.println("Tamaño " + cp1.getRuta().size());
+        System.out.println("Tamaño2 " + cp2.getRuta().size());
+
+        mutar(cp1, cp2);
+        result[0] = cp1;
+        result[1] = cp2;
+        return result;
+    }
+
     public LinkedList<Ruta> obtenerCandidatosCruze() {
         LinkedList<Ruta> candidatos = new LinkedList();
         for (int i = 0; i < candidatosSize; i++) {
-            int indiceRuta = (int) (Math.random() * poblacion.size());
+            int indiceRuta = (int) (Math.random() * candidatosSize);
             candidatos.add(i, poblacion.get(indiceRuta));
         }
         return candidatos;
@@ -172,9 +229,9 @@ public class Poblacion {
     public void buscarRutaEnPoblacion() {
         generarPoblacionInicial();
         ordenar();
-        while (numeroIteraciones>0) {
+        while (numeroIteraciones > 0) {
             //imprimirRutas();
-            poblacion.addAll(cruzarRutas(obtenerCandidatosCruze()));
+            poblacion.addAll(cruzarRutas2(obtenerCandidatosCruze()));
             //imprimirRutas();
             ordenar();
             eliminarDescartados();

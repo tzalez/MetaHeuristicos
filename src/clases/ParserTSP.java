@@ -127,15 +127,12 @@ public class ParserTSP {
         int iBest = 0;
         int jBest = 0;
         fCurrent = rutaO.calcularSumaDistancias();
-        //System.out.println(fCurrent);
         maxRuns--;
         Ruta rutaAux = new Ruta();
         while (maxRuns > 0) {
             for (int i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
                 for (int j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
-                    //System.out.println(maxRuns);
                     if (i != j) {
-                        //rutaAux = new LinkedList(rutaO.swapLocal(i, j));
                         rutaAux.setRuta(rutaO.swapLocal(i, j));
                         fAux = rutaAux.calcularSumaDistancias();
                         maxRuns--;
@@ -143,8 +140,6 @@ public class ParserTSP {
                             iBest = i;
                             jBest = j;
                             fCurrent = fAux;
-                            //System.out.println("fcurrent: "+fCurrent);
-
                         }
 
                     }

@@ -39,7 +39,7 @@ public class Ruta {
          System.out.print(ruta.get(i).getIdCuidad() + ",");
          }
          System.out.println();*/
-        int r1 = (int) (Math.random() * 42);
+        int r1 = (int) (Math.random() * 41);
         int r2;
         do {
             r2 = (int) (Math.random() * 42);
@@ -100,12 +100,24 @@ public class Ruta {
             this.ruta.remove(i);
         }
     }
-    public String imprimirCiudades(){
-        String ciudades="";
-        for(Ciudad c : ruta){
-            ciudades= ciudades + c.getIdCuidad()+ " - ";
+
+    public String imprimirCiudades() {
+        String ciudades = "";
+        for (Ciudad c : ruta) {
+            ciudades = ciudades + c.getIdCuidad() + " - ";
         }
         return ciudades;
+    }
+
+    public boolean contieneCiudad(int idCiudad) {
+        boolean contiene = false;
+        for (Ciudad ci : this.ruta) {
+            if (ci.getIdCuidad() == idCiudad) {
+                contiene = true;
+            }
+            break;
+        }
+        return contiene;
     }
 
 }

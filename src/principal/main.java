@@ -2,14 +2,6 @@ package principal;
 
 import clases.ParserTSP;
 import clases.Poblacion;
-
-/**
- *
- * @author Alvaro
- */
-/*Evaluar 1.000.000 de soluciones
- Repetir el proceso unas 10 veces para ajustar los valores
- */
 import clases.Ruta;
 
 public class main {
