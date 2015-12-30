@@ -102,7 +102,7 @@ public class Poblacion {
             if (!poblacion.contains(r)) {
                 poblacion.addLast(r);
                 r.calcularSumaDistancias();
-                evaluations++;
+                numeroIteraciones--;
             } else {
                 i--;
             }
@@ -124,7 +124,7 @@ public class Poblacion {
         Ruta r1;
         Ruta r2;
         while (i < lR.size()) {
-            if (evaluations > numeroIteraciones) {
+            if ( numeroIteraciones<=0) {
                 break;
             }
             //System.out.println(evaluations);
@@ -152,7 +152,7 @@ public class Poblacion {
             mutar(newRuta1, newRuta2);
             newRuta1.calcularSumaDistancias();
             newRuta2.calcularSumaDistancias();
-            evaluations = evaluations + 2;
+            numeroIteraciones = numeroIteraciones - 2;
             nuevasRutas.addLast(newRuta1);
             nuevasRutas.addLast(newRuta2);
             i = i + 2;
@@ -172,7 +172,7 @@ public class Poblacion {
     public void buscarRutaEnPoblacion() {
         generarPoblacionInicial();
         ordenar();
-        while (evaluations < numeroIteraciones) {
+        while (numeroIteraciones>0) {
             //imprimirRutas();
             poblacion.addAll(cruzarRutas(obtenerCandidatosCruze()));
             //imprimirRutas();

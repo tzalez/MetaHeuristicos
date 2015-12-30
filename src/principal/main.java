@@ -1,6 +1,7 @@
 package principal;
 
 import clases.ParserTSP;
+import clases.Poblacion;
 
 /**
  *
@@ -21,18 +22,17 @@ public class main {
         for (int i = 0; i < 10; i++) {
             //System.out.println("Ejecucion " + (i+1));
             //Busqueda local
-            ParserTSP.getParserTSP().generarRutaAleatoria();
-            //System.out.println("Greedy:");
+            /*ParserTSP.getParserTSP().generarRutaAleatoria();
             Ruta result = ParserTSP.getParserTSP().greedy();
             System.out.println("Greedy " + result.calcularSumaDistancias());
-            ParserTSP.getParserTSP().setMaxRuns(1000000);
-
+            ParserTSP.getParserTSP().setMaxRuns(1000000);*/
+                        
             //Busqueda en una poblacion
-            //Poblacion.getPoblacion().buscarRutaEnPoblacion();
+            Poblacion.getPoblacion().buscarRutaEnPoblacion();
             //System.out.println("RUTA MAS CORTA");
             //System.out.println(Poblacion.getPoblacion().obtenerPrimeraRuta().imprimirCiudades());
-            //System.out.println("BP " + Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
-            //Poblacion.getPoblacion().setNumeroIteraciones(1000000);
+            System.out.println("BP " + Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
+            Poblacion.getPoblacion().setNumeroIteraciones(1000000);
         }
     }
 
