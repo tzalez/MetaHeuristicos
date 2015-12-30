@@ -1,4 +1,3 @@
-
 package clases;
 
 import java.io.BufferedReader;
@@ -16,7 +15,7 @@ public class ParserTSP {
     private static ParserTSP vecinos = new ParserTSP();
     //private int populationSize;
     private int maxGenerations;
-    private int maxRuns = 100000;
+    private int maxRuns = 1000000;
     //private boolean isTSPFileIn;
     private int matrizDistancias[][];
     private int numVecinos;
@@ -111,7 +110,7 @@ public class ParserTSP {
     public boolean contieneRuta(LinkedList<Ruta> lRutas, Ruta ru) {
         boolean contains = false;
         for (int i = 0; i < lRutas.size(); i++) {
-            if (lRutas.get(i).comparar(ru)) {
+            if (lRutas.get(i).comparar(ru.getRuta())) {
                 contains = true;
                 break;
             }
@@ -127,38 +126,36 @@ public class ParserTSP {
         int fCurrent, fAux;
         int iBest = 0;
         int jBest = 0;
-        LinkedList<Ruta> rutasEvaluadas = new LinkedList();
         fCurrent = rutaO.calcularSumaDistancias();
         //System.out.println(fCurrent);
-        rutasEvaluadas.addLast(rutaO);
         maxRuns--;
-        Ruta rutaAux;
+        Ruta rutaAux = new Ruta();
         while (maxRuns > 0) {
             for (int i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
                 for (int j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
                     //System.out.println(maxRuns);
                     if (i != j) {
-                        rutaAux = rutaO.swapLocal(i, j);
-                        //if(!contieneRuta(rutasEvaluadas,rutaAux)){
-                        rutasEvaluadas.addLast(rutaAux);
+                        //rutaAux = new LinkedList(rutaO.swapLocal(i, j));
+                        rutaAux.setRuta(rutaO.swapLocal(i, j));
                         fAux = rutaAux.calcularSumaDistancias();
                         maxRuns--;
                         if (fAux < fCurrent) {
                             iBest = i;
                             jBest = j;
                             fCurrent = fAux;
-                                    //System.out.println("fcurrent: "+fCurrent);
+                            //System.out.println("fcurrent: "+fCurrent);
 
                         }
-                        //}
+
                     }
                 }
+
             }
 
             if (rutaO.comparar(rutaO.swapLocal(iBest, jBest))) {
                 break;
             } else {
-                rutaO = rutaO.swapLocal(iBest, jBest);
+                rutaO.setRuta(rutaO.swapLocal(iBest, jBest));
             }
         }
         return rutaO;

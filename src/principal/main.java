@@ -1,7 +1,6 @@
 package principal;
 
 import clases.ParserTSP;
-import clases.Poblacion;
 
 /**
  *
@@ -24,9 +23,9 @@ public class main {
             //Busqueda local
             ParserTSP.getParserTSP().generarRutaAleatoria();
             //System.out.println("Greedy:");
-           Ruta result = ParserTSP.getParserTSP().greedy();
+            Ruta result = ParserTSP.getParserTSP().greedy();
             System.out.println("Greedy " + result.calcularSumaDistancias());
-            ParserTSP.getParserTSP().setMaxRuns(100000);
+            ParserTSP.getParserTSP().setMaxRuns(1000000);
 
             //Busqueda en una poblacion
             //Poblacion.getPoblacion().buscarRutaEnPoblacion();

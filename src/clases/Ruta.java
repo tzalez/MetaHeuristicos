@@ -57,14 +57,13 @@ public class Ruta {
          */
     }
 
-    public Ruta swapLocal(int id1, int id2) {
-        Ruta result = new Ruta();
-        result.setRuta(new LinkedList<Ciudad>(this.getRuta()));
-        Ciudad aux1 = result.getRuta().get(id1);
-        Ciudad aux2 = result.getRuta().get(id2);
-        result.getRuta().set(id1, aux2);
-        result.getRuta().set(id2, aux1);
-        return result;
+    public LinkedList<Ciudad> swapLocal(int id1, int id2) {
+        LinkedList<Ciudad> res = new LinkedList(ruta);
+        Ciudad aux1 = res.get(id1);
+        Ciudad aux2 = res.get(id2);
+        res.set(id1, aux2);
+        res.set(id2, aux1);
+        return res;
     }
 
     public int calcularSumaDistancias() {
@@ -84,10 +83,10 @@ public class Ruta {
         return ruta.size();
     }
 
-    public boolean comparar(Ruta ru) {
+    public boolean comparar(LinkedList<Ciudad> ru) {
         boolean iguales = true;
-        for (int i = 0; i < ru.getRuta().size(); i++) {
-            if (ru.getRuta().get(i).getIdCuidad() != this.getRuta().get(i).getIdCuidad()) {
+        for (int i = 0; i < ru.size(); i++) {
+            if (ru.get(i).getIdCuidad() != this.getRuta().get(i).getIdCuidad()) {
                 iguales = false;
                 break;
             }
