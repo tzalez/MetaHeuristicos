@@ -91,7 +91,6 @@ public class Ruta {
                 break;
             }
         }
-
         return iguales;
     }
 
@@ -114,10 +113,9 @@ public class Ruta {
         for (Ciudad ci : this.ruta) {
             if (ci.getIdCuidad() == idCiudad) {
                 contiene = true;
-            }
-            break;
+                break;
+            }  
         }
         return contiene;
     }
-
 }

@@ -13,10 +13,7 @@ import java.util.StringTokenizer;
 public class ParserTSP {
 
     private static ParserTSP vecinos = new ParserTSP();
-    //private int populationSize;
-    private int maxGenerations;
     private int maxRuns = 1000000;
-    //private boolean isTSPFileIn;
     private int matrizDistancias[][];
     private int numVecinos;
     private HashMap<Integer, Ciudad> lCiudades = new HashMap();
@@ -68,14 +65,14 @@ public class ParserTSP {
             }
             line = in.readLine();
         }
-
         return graph;
     }
 
     public void cargarCiudades() {
-        for (int i = 0; i < matrizDistancias.length; i++) {
+        int i,j;
+        for (i = 0; i < matrizDistancias.length; i++) {
             Ciudad temp = new Ciudad(i);
-            for (int j = 0; j < matrizDistancias[i].length; j++) {
+            for (j = 0; j < matrizDistancias[i].length; j++) {
                 if (i < j) {
                     temp.agregarDestino(j, matrizDistancias[j][i]);
                     //System.out.println(matrizDistancias[j][i]);
@@ -85,23 +82,23 @@ public class ParserTSP {
                 }
             }
             lCiudades.put(i, temp);
-
         }
-
     }
 
     public void generarRutaAleatoria() {
         rutaO = new Ruta();
+        int ran;
         while (rutaO.numeroCiudades() < matrizDistancias.length) {
-            int ran = (int) (Math.random() * 42);
+            ran = (int) (Math.random() * 42);
             rutaO.agregarCiudad(lCiudades.get(ran));
         }
     }
 
     public Ruta generarRutaAleatoriaP() {
         Ruta r = new Ruta();
+        int ran;
         while (r.numeroCiudades() < matrizDistancias.length) {
-            int ran = (int) (Math.random() * 42);
+            ran = (int) (Math.random() * 42);
             r.agregarCiudad(lCiudades.get(ran));
         }
         return r;
@@ -126,12 +123,13 @@ public class ParserTSP {
         int fCurrent, fAux;
         int iBest = 0;
         int jBest = 0;
+        int i,j;
         fCurrent = rutaO.calcularSumaDistancias();
         maxRuns--;
         Ruta rutaAux = new Ruta();
         while (maxRuns > 0) {
-            for (int i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
-                for (int j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
+            for ( i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
+                for ( j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
                     if (i != j) {
                         rutaAux.setRuta(rutaO.swapLocal(i, j));
                         fAux = rutaAux.calcularSumaDistancias();

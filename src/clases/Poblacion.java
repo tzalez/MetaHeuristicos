@@ -184,33 +184,19 @@ public class Poblacion {
         Ruta cp1 = new Ruta();
         Ruta cp2 = new Ruta();
         int i, j;
-        for (int k = 0; k < rP2.getRuta().size(); k++) {
-            System.out.println("AKI");
-            System.out.print(rP1.getRuta().get(k).getIdCuidad());
-            System.out.println();
-            System.out.print(rP2.getRuta().get(k).getIdCuidad());
-
-        }
         for (i = 0; i <= point; i++) {
             cp1.agregarCiudad(rP1.getRuta().get(i));
             cp2.agregarCiudad(rP2.getRuta().get(i));
 
         }
-        System.out.println("Tamaño aaa" + cp1.getRuta().size());
-        System.out.println("Tamaño2 aaa" + cp2.getRuta().size());
-
         for (j = 0; j < rP2.getRuta().size(); j++) {
-            if (!cp1.contieneCiudad(rP2.getRuta().get(i).getIdCuidad())) {
-                cp1.agregarCiudad(rP2.getRuta().get(i));
+            if (!cp1.contieneCiudad(rP2.getRuta().get(j).getIdCuidad())) {
+                cp1.agregarCiudad(rP2.getRuta().get(j));
             }
-            if (!cp2.contieneCiudad(rP1.getRuta().get(i).getIdCuidad())) {
-                cp2.agregarCiudad(rP1.getRuta().get(i));
+            if (!cp2.contieneCiudad(rP1.getRuta().get(j).getIdCuidad())) {
+                cp2.agregarCiudad(rP1.getRuta().get(j));
             }
-
         }
-        System.out.println("Tamaño " + cp1.getRuta().size());
-        System.out.println("Tamaño2 " + cp2.getRuta().size());
-
         mutar(cp1, cp2);
         result[0] = cp1;
         result[1] = cp2;
