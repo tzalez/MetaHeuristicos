@@ -6,17 +6,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-/**
- *
- * @author iker
- */
 public class ParserTSP {
 
     private static ParserTSP vecinos = new ParserTSP();
     private int maxRuns = 1000000;
     private int matrizDistancias[][];
     private int numVecinos;
-    private HashMap<Integer, Ciudad> lCiudades = new HashMap();
+    private final HashMap<Integer, Ciudad> lCiudades = new HashMap();
     private Ruta rutaO = new Ruta();
 
     private ParserTSP() {
@@ -69,16 +65,14 @@ public class ParserTSP {
     }
 
     public void cargarCiudades() {
-        int i,j;
+        int i, j;
         for (i = 0; i < matrizDistancias.length; i++) {
             Ciudad temp = new Ciudad(i);
             for (j = 0; j < matrizDistancias[i].length; j++) {
                 if (i < j) {
                     temp.agregarDestino(j, matrizDistancias[j][i]);
-                    //System.out.println(matrizDistancias[j][i]);
                 } else if (j < i) {
                     temp.agregarDestino(j, matrizDistancias[i][j]);
-                    //System.out.println(matrizDistancias[i][j]);
                 }
             }
             lCiudades.put(i, temp);
@@ -123,13 +117,13 @@ public class ParserTSP {
         int fCurrent, fAux;
         int iBest = 0;
         int jBest = 0;
-        int i,j;
+        int i, j;
         fCurrent = rutaO.calcularSumaDistancias();
         maxRuns--;
         Ruta rutaAux = new Ruta();
         while (maxRuns > 0) {
-            for ( i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
-                for ( j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
+            for (i = 0; i < matrizDistancias.length && maxRuns > 0; i++) {
+                for (j = 0; j < matrizDistancias.length && maxRuns > 0; j++) {
                     if (i != j) {
                         rutaAux.setRuta(rutaO.swapLocal(i, j));
                         fAux = rutaAux.calcularSumaDistancias();
@@ -142,9 +136,7 @@ public class ParserTSP {
 
                     }
                 }
-
             }
-
             if (rutaO.comparar(rutaO.swapLocal(iBest, jBest))) {
                 break;
             } else {

@@ -13,7 +13,7 @@ public class Ruta {
 
     public Ruta() {
         ruta = new LinkedList();
-        this.sumaDistancias = 0;
+        this.sumaDistancias = 999999;
     }
 
     public void agregarCiudad(Ciudad Ciudad) {
@@ -35,10 +35,6 @@ public class Ruta {
     }
 
     public void swapPobla() {
-        /*for (int i = 0; i < ruta.size(); i++) {
-         System.out.print(ruta.get(i).getIdCuidad() + ",");
-         }
-         System.out.println();*/
         int r1 = (int) (Math.random() * 41);
         int r2;
         do {
@@ -48,13 +44,6 @@ public class Ruta {
         Ciudad aux2 = ruta.get(r2);
         ruta.set(r1, aux2);
         ruta.set(r2, aux1);
-        /*
-         System.out.println("SWAP");
-         for (int i = 0; i < ruta.size(); i++) {
-         System.out.print(ruta.get(i).getIdCuidad() + ",");
-         }
-         System.out.println();
-         */
     }
 
     public LinkedList<Ciudad> swapLocal(int id1, int id2) {
@@ -68,12 +57,12 @@ public class Ruta {
 
     public int calcularSumaDistancias() {
         sumaDistancias = 0;
-        for (int i = 0; i < ruta.size(); i++) {
+        int i;
+        for (i = 0; i < ruta.size(); i++) {
             if (i == ruta.size() - 1) {
                 sumaDistancias += ruta.get(i).devolverDistDestino(ruta.get(0).getIdCuidad());
             } else {
                 sumaDistancias += ruta.get(i).devolverDistDestino(ruta.get(i + 1).getIdCuidad());
-                //System.out.println(ruta.get(i).devolverDistDestino(ruta.get(i+1).getIdCuidad()));
             }
         }
         return sumaDistancias;
@@ -85,7 +74,8 @@ public class Ruta {
 
     public boolean comparar(LinkedList<Ciudad> ru) {
         boolean iguales = true;
-        for (int i = 0; i < ru.size(); i++) {
+        int i;
+        for (i = 0; i < ru.size(); i++) {
             if (ru.get(i).getIdCuidad() != this.getRuta().get(i).getIdCuidad()) {
                 iguales = false;
                 break;
@@ -95,7 +85,8 @@ public class Ruta {
     }
 
     public void eliminarDesde(int n) {
-        for (int i = n; i < this.ruta.size(); i++) {
+        int i;
+        for (i = n; i < this.ruta.size(); i++) {
             this.ruta.remove(i);
         }
     }
@@ -114,7 +105,7 @@ public class Ruta {
             if (ci.getIdCuidad() == idCiudad) {
                 contiene = true;
                 break;
-            }  
+            }
         }
         return contiene;
     }
