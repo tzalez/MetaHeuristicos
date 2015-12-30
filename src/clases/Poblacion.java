@@ -20,7 +20,7 @@ public class Poblacion {
     private final double ratioMutacion = 0.10;
     private final int candidatosSize = 50;
     private int evaluations;
-    private final int numeroIteraciones = 1000000;
+    private int numeroIteraciones = 1000000;
 
     //one point entre 0...41
     //mutar ramdom < 0.10 -> > 0.10 no mutar (mutar las dos rutas)(se muta con swap aleatorio)
@@ -31,6 +31,9 @@ public class Poblacion {
     public static Poblacion getPoblacion() {
         return MAEPoblacion;
 
+    }
+    public void setNumeroIteraciones(int maxRuns) {
+        this.numeroIteraciones = maxRuns;
     }
 
     public Ruta obtenerPrimeraRuta() {

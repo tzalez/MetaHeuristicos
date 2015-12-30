@@ -119,6 +119,10 @@ public class ParserTSP {
         return contains;
     }
 
+    public void setMaxRuns(int maxRuns) {
+        this.maxRuns = maxRuns;
+    }
+
     public Ruta greedy() {
         int fCurrent, fAux;
         int iBest = 0;
@@ -143,6 +147,8 @@ public class ParserTSP {
                             iBest = i;
                             jBest = j;
                             fCurrent = fAux;
+                                    //System.out.println("fcurrent: "+fCurrent);
+
                         }
                         //}
                     }

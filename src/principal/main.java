@@ -24,14 +24,16 @@ public class main {
             //Busqueda local
             ParserTSP.getParserTSP().generarRutaAleatoria();
             //System.out.println("Greedy:");
-            Ruta result = ParserTSP.getParserTSP().greedy();
+           Ruta result = ParserTSP.getParserTSP().greedy();
             System.out.println("Greedy " + result.calcularSumaDistancias());
+            ParserTSP.getParserTSP().setMaxRuns(100000);
 
             //Busqueda en una poblacion
-            Poblacion.getPoblacion().buscarRutaEnPoblacion();
+            //Poblacion.getPoblacion().buscarRutaEnPoblacion();
             //System.out.println("RUTA MAS CORTA");
             //System.out.println(Poblacion.getPoblacion().obtenerPrimeraRuta().imprimirCiudades());
-            System.out.println("BP " + Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
+            //System.out.println("BP " + Poblacion.getPoblacion().obtenerPrimeraRuta().getSumaDistancias());
+            //Poblacion.getPoblacion().setNumeroIteraciones(1000000);
         }
     }
 
