@@ -19,7 +19,7 @@ public class Poblacion {
     private final double ratioMutacion = 0.1;
     private final int candidatosSize = 50;
     private int evaluations;
-    private int numeroIteraciones = 1000000;
+    private int numeroIteraciones = 100000;
 
     //one point entre 0...41
     //mutar ramdom < 0.10 -> > 0.10 no mutar (mutar las dos rutas)(se muta con swap aleatorio)
@@ -41,8 +41,10 @@ public class Poblacion {
     }
 
     public void eliminarDescartados() {
+        int z;
+        z=poblacion.size();
         //for (int i = poblacionSize-1; i < poblacion.size()-1; i++) {//Esto no se puede poner por que en cada iteracion el tamaño de poblacion.size() cambia
-        for (int i = poblacionSize; i < 150; i++) {
+        for (int i = poblacionSize; i < z; i++) {
             poblacion.removeLast();
         }
     }
@@ -106,7 +108,6 @@ public class Poblacion {
                 poblacion.addLast(r);
 
             } else {
-                System.out.println("Jimy");
                 i--;
             }
         }
@@ -198,6 +199,9 @@ public class Poblacion {
             }
         }
         mutar(cp1, cp2);
+        cp1.calcularSumaDistancias();
+        cp2.calcularSumaDistancias();
+        numeroIteraciones-=2;
         result[0] = cp1;
         result[1] = cp2;
         return result;
